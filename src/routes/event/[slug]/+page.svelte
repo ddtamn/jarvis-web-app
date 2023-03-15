@@ -3,6 +3,10 @@
   import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
   import { onMount } from "svelte";
   export let data;
+  /**
+* @type {number}
+*/
+  let progress;
 
   onMount(async () => {
     // await ffmpeg.load().then(() => {
@@ -14,7 +18,7 @@
     console.log("start");
     const ffmpeg = createFFmpeg({
       progress: (e) => {
-        console.log(e.ratio);
+        progress = e.ratio
       },
       log: true,
       corePath: "http://localhost:5173/ffmpeg-core.js",
@@ -129,5 +133,6 @@
       class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5"
       >Record</button
     >
+    <p>{progress}</p>
   </div>
 </div>
