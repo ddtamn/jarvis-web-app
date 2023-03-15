@@ -11,6 +11,7 @@
   });
 
   async function proccess(/** @type {any} */ file) {
+    console.log("start");
     const ffmpeg = createFFmpeg({
       progress: (e) => {
         console.log(e.ratio);
@@ -22,12 +23,14 @@
       "https://yzxsiqwrmigznhixkeyy.supabase.co/storage/v1/object/public/videos";
 
     await ffmpeg.load().then(async () => {
+      console.log('load');
       ffmpeg.FS(
         "writeFile",
         "video.mp4",
         await fetchFile(`${storageURL}/${file}`)
       );
 
+      console.log("res 1");
       await ffmpeg.run(
         "-i",
         "video.mp4",
@@ -41,7 +44,7 @@
         "30",
         "result1.mp4"
       );
-
+      console.log("res 2");
       await ffmpeg.run("-i", "result1.mp4", "-c", "copy", "intermediate1.ts");
 
       await ffmpeg.run(
@@ -58,6 +61,7 @@
         "result2.mp4"
       );
 
+      console.log("res 3");
       await ffmpeg.run(
         "-i",
         "result2.mp4",
@@ -66,6 +70,8 @@
         "result2slow.mp4"
       );
 
+
+      console.log("res 4");
       await ffmpeg.run(
         "-i",
         "result2slow.mp4",
@@ -73,6 +79,8 @@
         "copy",
         "intermediate2.ts"
       );
+
+      console.log("res 5");
 
       await ffmpeg.run(
         "-i",
